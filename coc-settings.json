@@ -1,0 +1,19 @@
+{
+  "suggest.enablePreview": true,
+  "diagnostic.errorSign": "!!",
+  "diagnostic.warningSign": "**",
+  "languageserver": {
+    "clangd": {
+      "command": "clangd",
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json", "./build/compile_commands.json"],
+      "filetypes": ["c.doxygen", "c", "cc.doxygen", "cc", "cpp.doxygen", "cpp", "c++.doxygen", "c++", "objc", "objcpp"]
+    },
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": ["--lsp", "-d", "-l", "/tmp/haskell-lsp.log"],
+      "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
+      "filetypes": ["haskell", "lhaskell"]
+    }
+  },
+  "bookmark.sign": ""
+}

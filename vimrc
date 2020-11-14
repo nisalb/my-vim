@@ -1,3 +1,5 @@
+" vim: set ts=4 sw=4:
+
 " automatically download vim-plug if not installed
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -13,18 +15,22 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/nerdtree'
 Plug 'kien/ctrlp.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'
-Plug 'ycm-core/YouCompleteMe'
+Plug 'ryanoasis/vim-devcons'
+" Plug 'ycm-core/YouCompleteMe'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
 Plug 'preservim/tagbar'
+Plug 'Shougo/neco-vim'
+Plug 'neoclide/coc-neco'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " End of plugin list
 call plug#end()
 
 let mapleader = ","
+" colorscheme ron " setting colorscheme may mess up some colors set below
 set hls
 set background=dark
 set cindent
@@ -32,11 +38,27 @@ set exrc
 set secure
 set tabstop=8
 set shiftwidth=8
-" colorscheme ron
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+
+" always on signal column, otherwise text will jump
+" everytime a diagnostic appear
+if has("patch-8.1.1564")
+	" merge signcolumn and number column
+	set signcolumn=number
+else
+	" this will take some space
+	set signcolumn=yes
+endif
 
 " -- Generic
 "  format C buffers on save
-autocmd BufWritePre *.h,*.c,*.hh,*.cc,*.cpp call ClangFomatOnSave()
+"  TODO: Try getting CoC doing this
+" autocmd BufWritePre *.h,*.c,*.hh,*.cc,*.cpp call ClangFomatOnSave()
+
+" preferred tab measurements
+autocmd FileType json,python,ruby,css,html setlocal ts=2 sw=2 et
 
 "  Fix some misunderstadings
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
@@ -45,8 +67,9 @@ autocmd BufRead,BufNewFile *.hh,*.cc,*.cpp set filetype=cpp.doxygen
 "  fix some ugly colors
 highlight SignColumn NONE
 highlight SignColumn term=standout ctermfg=14 guifg=Cyan guibg=Grey
-highlight YcmErrorSign ctermfg=224
-highlight YcmWarningSign ctermfg=yellow
+highlight Pmenu ctermbg=4 guibg=DarkBlue
+" highlight YcmErrorSign ctermfg=224
+" highlight YcmWarningSign ctermfg=yellow
 
 "  handle trailing whitespaces
 highlight ExtraWhitespaces ctermbg=yellow guibg=yellow
@@ -67,22 +90,27 @@ if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
 let g:airline_symbols.linenr     = ''
-let g:airline_left_sep           = ''
-let g:airline_left_alt_sep   	 = ''
-let g:airline_right_sep      	 = ''
-let g:airline_right_alt_sep 	 = ''
+" let g:airline_left_sep           = ''
+" let g:airline_left_alt_sep   	 = ''
+" let g:airline_right_sep      	 = ''
+" let g:airline_right_alt_sep 	 = ''
 let g:airline_symbols.whitespace = ''
 let g:airline_symbols.notexists  = 'φ'
 
 " -- Buffer Management
+set hidden
 " next buffer
-nmap <silent> <leader>n :bNext<CR>
+nmap <silent> <leader>n :bnext<CR>
 " previous buffer
 nmap <silent> <leader>p :bprevious<CR>
 " close the buffer and move to previous one
 nmap <silent> <leader>q :bp <BAR> bd #<CR>
 " use fzf buffer list
 nmap <silent> <leader>b :Buffers<CR>
+
+" -- CoC.nvim
+" coc seems better than YCM, but it's complicated for me.
+source $HOME/.vim/coc.vim
 
 " -- CtrlP
 let g:ctrlp_working_path_mode = 'rc'
@@ -109,14 +137,14 @@ let NERDTreeQuitOnOpen = 1
 let g:NERDTreeDirArrowExpandable = '▶'
 let g:NERDTreeDirArrowCollapsible = '▼'
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-			\ 'Modified'  :'',
-			\ 'Staged'    :'✚',
-			\ 'Untracked' :'',
-			\ 'Renamed'   :'',
+			\ 'Modified'  :'',
+			\ 'Staged'    :'S',
+			\ 'Untracked' :'U',
+			\ 'Renamed'   :'r',
 			\ 'Unmerged'  :'═',
-			\ 'Deleted'   :'',
-			\ 'Dirty'     :'',
-			\ 'Ignored'   :'',
+			\ 'Deleted'   :'d',
+			\ 'Dirty'     :'',
+			\ 'Ignored'   :'i',
 			\ 'Clean'     :'',
 			\ 'Unknown'   :'?',}
 nmap <silent> <leader>t :NERDTreeToggle<CR>
@@ -132,23 +160,26 @@ nmap <silent> <leader>T :TagbarToggle<CR>
 nmap <silent> <leader>u :UndotreeToggle<CR>
 
 " -- YCM
-let g:ycm_clangd_uses_ycmd_caching                  = 0			" Let clangd fully control code completion
-let g:ycm_clangd_binary_path                        = exepath("clangd")	" Use installed clangd
-let g:ycm_complete_in_comments_and_strings          = 1
-let g:ycm_key_list_select_completion                = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion              = ['<C-p>', '<Up>']
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_error_symbol                              = '!!'
-let g:ycm_warning_symbol                            = '**'
-
-nmap <silent> <leader>ci :YcmCompleter GoToInclude<CR>
-nmap <silent> <leader>cd :YcmCompleter GoToDeclaration<CR>
-nmap <silent> <leader>cD :YcmCompleter GoToDefinition<CR>
-nmap <silent> <leader>cr :YcmCompleter GoToReferences<CR>
-nmap <silent> <leader>ct :YcmCompleter GetType<CR>
-nmap <silent> <leader>cR :call YcmCompleterRenameCommand(input('New name: '))<CR>
+"  decommissioned in favor of coc.nvim
+" let g:ycm_clangd_uses_ycmd_caching                  = 0			" Let clangd fully control code completion
+" let g:ycm_clangd_binary_path                        = exepath("clangd")	" Use installed clangd
+" let g:ycm_complete_in_comments_and_strings          = 1
+" let g:ycm_key_list_select_completion                = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion              = ['<C-p>', '<Up>']
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_error_symbol                              = '!!'
+" let g:ycm_warning_symbol                            = '**'
+"
+" nmap <silent> <leader>ci :YcmCompleter GoToInclude<CR>
+" nmap <silent> <leader>cd :YcmCompleter GoToDeclaration<CR>
+" nmap <silent> <leader>cD :YcmCompleter GoToDefinition<CR>
+" nmap <silent> <leader>cr :YcmCompleter GoToReferences<CR>
+" nmap <silent> <leader>ct :YcmCompleter GetType<CR>
+" nmap <silent> <leader>cR :call YcmCompleterRenameCommand(input('New name: '))<CR>
 
 " --- Functions
+
+
 function! ClangFomatOnSave()
 	let l:formatdiff = 1
 	py3f /usr/share/clang/clang-format.py
