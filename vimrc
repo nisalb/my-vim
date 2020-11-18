@@ -1,10 +1,10 @@
-" vim: set ts=4 sw=4:
+" vim: set ts=4 sw=4 et:
 
 " automatically download vim-plug if not installed
 if empty(glob('~/.vim/autoload/plug.vim'))
-	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Start plugin list
@@ -46,11 +46,11 @@ set shortmess+=c
 " always on signal column, otherwise text will jump
 " everytime a diagnostic appear
 if has("patch-8.1.1564")
-	" merge signcolumn and number column
-	set signcolumn=number
+    " merge signcolumn and number column
+    set signcolumn=number
 else
-	" this will take some space
-	set signcolumn=yes
+    " this will take some space
+    set signcolumn=yes
 endif
 
 " -- Generic
@@ -84,19 +84,19 @@ nmap <silent> <leader>wc :%s/\s\+$//e<CR>
 
 " -- Airline
 let g:airline_theme = 'bubblegum'
-let g:airline#extensions#tabline#enabled  = 1	 " enable the list of buffers
+let g:airline#extensions#tabline#enabled  = 1    " enable the list of buffers
 " let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
-let g:airline_symbols.linenr	 = ''
-" let g:airline_left_sep		   = ''
-" let g:airline_left_alt_sep	 = ''
-" let g:airline_right_sep		 = ''
-" let g:airline_right_alt_sep	 = ''
+let g:airline_symbols.linenr     = ''
+" let g:airline_left_sep         = ''
+" let g:airline_left_alt_sep     = ''
+" let g:airline_right_sep        = ''
+" let g:airline_right_alt_sep    = ''
 let g:airline_symbols.whitespace = ''
 let g:airline_symbols.notexists  = 'φ'
 
@@ -124,14 +124,14 @@ nmap <silent> <leader>q :bp <BAR> bd #<CR>
 nmap <silent> <leader>b :Buffers<CR>
 
 " -- CoC.nvim
-" coc seems better than YCM, but it's complicated for me.
+" coc is better than YCM.
 source $HOME/.vim/coc.vim
 
 " -- CtrlP
 let g:ctrlp_working_path_mode = 'rc'
 let g:ctrlp_custom_ignore = {
-	\ 'dir': '\v[\/](\.(git|hg|svn)|\_site)$',
-	\ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+    \ 'dir': '\v[\/](\.(git|hg|svn)|\_site)$',
+    \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 nmap <silent> <leader>P :CtrlP<CR>
 
@@ -148,20 +148,20 @@ nnoremap <silent> <leader>L :Lines<CR>
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeQuitOnOpen					  = 0
-let g:NERDTreeDirArrowExpandable		  = '▶'
-let g:NERDTreeDirArrowCollapsible		  = '▼'
+let NERDTreeQuitOnOpen                    = 0
+let g:NERDTreeDirArrowExpandable          = '▶'
+let g:NERDTreeDirArrowCollapsible         = '▼'
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-			\ 'Modified'  :'',
-			\ 'Staged'	  :'S',
-			\ 'Untracked' :'U',
-			\ 'Renamed'   :'r',
-			\ 'Unmerged'  :'═',
-			\ 'Deleted'   :'d',
-			\ 'Dirty'	  :'',
-			\ 'Ignored'   :'i',
-			\ 'Clean'	  :'',
-			\ 'Unknown'   :'?',}
+            \ 'Modified'  :'',
+            \ 'Staged'    :'S',
+            \ 'Untracked' :'U',
+            \ 'Renamed'   :'r',
+            \ 'Unmerged'  :'═',
+            \ 'Deleted'   :'d',
+            \ 'Dirty'     :'',
+            \ 'Ignored'   :'i',
+            \ 'Clean'     :'',
+            \ 'Unknown'   :'?',}
 nmap <silent> <leader>t :NERDTreeToggle<CR>
 
 " -- Other functionalities
@@ -176,14 +176,14 @@ nmap <silent> <leader>u :UndotreeToggle<CR>
 
 " -- YCM
 "  decommissioned in favor of coc.nvim
-" let g:ycm_clangd_uses_ycmd_caching				  = 0			" Let clangd fully control code completion
-" let g:ycm_clangd_binary_path						  = exepath("clangd")	" Use installed clangd
-" let g:ycm_complete_in_comments_and_strings		  = 1
-" let g:ycm_key_list_select_completion				  = ['<C-n>', '<Down>']
-" let g:ycm_key_list_previous_completion			  = ['<C-p>', '<Up>']
+" let g:ycm_clangd_uses_ycmd_caching                  = 0                   " Let clangd fully control code completion
+" let g:ycm_clangd_binary_path                        = exepath("clangd")   " Use installed clangd
+" let g:ycm_complete_in_comments_and_strings          = 1
+" let g:ycm_key_list_select_completion                = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion              = ['<C-p>', '<Up>']
 " let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_error_symbol							  = '!!'
-" let g:ycm_warning_symbol							  = '**'
+" let g:ycm_error_symbol                              = '!!'
+" let g:ycm_warning_symbol                            = '**'
 "
 " nmap <silent> <leader>ci :YcmCompleter GoToInclude<CR>
 " nmap <silent> <leader>cd :YcmCompleter GoToDeclaration<CR>
@@ -196,17 +196,17 @@ nmap <silent> <leader>u :UndotreeToggle<CR>
 
 
 function! ClangFomatOnSave()
-	let l:formatdiff = 1
-	py3f /usr/share/clang/clang-format.py
+    let l:formatdiff = 1
+    py3f /usr/share/clang/clang-format.py
 endfunction
 
 function! YcmCompleterRenameCommand(new_name)
-	execute ':YcmCompleter RefactorRename '.a:new_name
+    execute ':YcmCompleter RefactorRename '.a:new_name
 endfunction
 
 function! ToggleLineNumbers()
-	if v:version > 703
-		set norelativenumber!
-	endif
-	set nonumber!
+    if v:version > 703
+        set norelativenumber!
+    endif
+    set nonumber!
 endfunction
