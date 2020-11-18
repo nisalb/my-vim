@@ -135,6 +135,15 @@ let g:ctrlp_custom_ignore = {
 \}
 nmap <silent> <leader>P :CtrlP<CR>
 
+" -- CursorLine: highlight current line, to not to be lost in a sea of text
+set cursorline
+highlight CursorLine term=bold cterm=NONE ctermbg=238 guibg=Grey
+
+" -- Text width margin. mark a column as maximum text width 
+set textwidth=80
+set colorcolumn=+1 " mark textwidth + 1 column 
+highlight ColorColumn ctermbg=238 guibg=Grey
+
 " -- Fugitive
 nmap <silent> <leader>g :Git<CR>
 
