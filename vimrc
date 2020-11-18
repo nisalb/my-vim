@@ -25,6 +25,7 @@ Plug 'preservim/tagbar'
 Plug 'Shougo/neco-vim'
 Plug 'neoclide/coc-neco'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter'
 
 " End of plugin list
 call plug#end()
@@ -63,6 +64,7 @@ autocmd FileType json,python,ruby,css,html setlocal ts=2 sw=2 et
 "  Fix some misunderstadings
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
 autocmd BufRead,BufNewFile *.hh,*.cc,*.cpp set filetype=cpp.doxygen
+autocmd BufRead,BufNewFile */make/** set filetype=make
 
 "  fix some ugly colors
 highlight SignColumn NONE
@@ -82,20 +84,33 @@ nmap <silent> <leader>wc :%s/\s\+$//e<CR>
 
 " -- Airline
 let g:airline_theme = 'bubblegum'
-let g:airline#extensions#tabline#enabled  = 1    " enable the list of buffers
-let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
+let g:airline#extensions#tabline#enabled  = 1	 " enable the list of buffers
+" let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
-let g:airline_symbols.linenr     = ''
-" let g:airline_left_sep           = ''
-" let g:airline_left_alt_sep   	 = ''
-" let g:airline_right_sep      	 = ''
-" let g:airline_right_alt_sep 	 = ''
+let g:airline_symbols.linenr	 = ''
+" let g:airline_left_sep		   = ''
+" let g:airline_left_alt_sep	 = ''
+" let g:airline_right_sep		 = ''
+" let g:airline_right_alt_sep	 = ''
 let g:airline_symbols.whitespace = ''
 let g:airline_symbols.notexists  = 'φ'
+
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>+ <Plug>AirlineSelectNextTab
 
 " -- Buffer Management
 set hidden
@@ -133,19 +148,19 @@ nnoremap <silent> <leader>L :Lines<CR>
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeQuitOnOpen = 1
-let g:NERDTreeDirArrowExpandable = '▶'
-let g:NERDTreeDirArrowCollapsible = '▼'
+let NERDTreeQuitOnOpen					  = 0
+let g:NERDTreeDirArrowExpandable		  = '▶'
+let g:NERDTreeDirArrowCollapsible		  = '▼'
 let g:NERDTreeGitStatusIndicatorMapCustom = {
 			\ 'Modified'  :'',
-			\ 'Staged'    :'S',
+			\ 'Staged'	  :'S',
 			\ 'Untracked' :'U',
 			\ 'Renamed'   :'r',
 			\ 'Unmerged'  :'═',
 			\ 'Deleted'   :'d',
-			\ 'Dirty'     :'',
+			\ 'Dirty'	  :'',
 			\ 'Ignored'   :'i',
-			\ 'Clean'     :'',
+			\ 'Clean'	  :'',
 			\ 'Unknown'   :'?',}
 nmap <silent> <leader>t :NERDTreeToggle<CR>
 
@@ -161,14 +176,14 @@ nmap <silent> <leader>u :UndotreeToggle<CR>
 
 " -- YCM
 "  decommissioned in favor of coc.nvim
-" let g:ycm_clangd_uses_ycmd_caching                  = 0			" Let clangd fully control code completion
-" let g:ycm_clangd_binary_path                        = exepath("clangd")	" Use installed clangd
-" let g:ycm_complete_in_comments_and_strings          = 1
-" let g:ycm_key_list_select_completion                = ['<C-n>', '<Down>']
-" let g:ycm_key_list_previous_completion              = ['<C-p>', '<Up>']
+" let g:ycm_clangd_uses_ycmd_caching				  = 0			" Let clangd fully control code completion
+" let g:ycm_clangd_binary_path						  = exepath("clangd")	" Use installed clangd
+" let g:ycm_complete_in_comments_and_strings		  = 1
+" let g:ycm_key_list_select_completion				  = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion			  = ['<C-p>', '<Up>']
 " let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_error_symbol                              = '!!'
-" let g:ycm_warning_symbol                            = '**'
+" let g:ycm_error_symbol							  = '!!'
+" let g:ycm_warning_symbol							  = '**'
 "
 " nmap <silent> <leader>ci :YcmCompleter GoToInclude<CR>
 " nmap <silent> <leader>cd :YcmCompleter GoToDeclaration<CR>
