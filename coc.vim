@@ -4,23 +4,34 @@
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<TAB>" :
+	\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" -- Extensions to install if they aren't installed already
+let g:coc_global_extensions = [
+	\ 'coc-bookmark',
+	\ 'coc-css',
+	\ 'coc-html',
+	\ 'coc-json',
+	\ 'coc-pairs',
+	\ 'coc-prettier',
+	\ 'coc-solargraph',
+	\ 'coc-tsserver',
+	\ 'coc-yank'
+	\]
 
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+	inoremap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+	inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -79,8 +90,8 @@ inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(
 " NeoVim-only mapping for visual mode scroll
 " Useful on signatureHelp after jump placeholder of snippet expansion
 if has('nvim')
-  vnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#nvim_scroll(1, 1) : "\<C-f>"
-  vnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#nvim_scroll(0, 1) : "\<C-b>"
+	vnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#nvim_scroll(1, 1) : "\<C-f>"
+	vnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#nvim_scroll(0, 1) : "\<C-b>"
 endif
 
 " Use CTRL-S for selections ranges.
@@ -93,10 +104,10 @@ command! -nargs=0 Format :call CocAction('format')
 nmap <silent> <leader>cF :Format<CR>
 
 " Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call	 CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR   :call	 CocAction('runCommand', 'editor.action.organizeImport')
 nmap <silent> <leader>cO :OR<CR>
 
 " Add (Neo)Vim's native statusline support.
@@ -129,19 +140,22 @@ nnoremap <silent> <leader>jn :<C-u>CocCommand bookmark.next<CR>
 nnoremap <silent> <leader>jp :<C-u>CocCommand bookmark.prev<CR>
 nnoremap <silent> <leader>jc :<C-u>CocCommand bookmark.clearForCurrentFile<CR>
 
+" -- Yank map
+nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<CR>
+
 " -- Functions
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]	=~# '\s'
 endfunction
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	elseif (coc#rpc#ready())
+		call CocActionAsync('doHover')
+	else
+		execute '!' . &keywordprg . " " . expand('<cword>')
+	endif
 endfunction
