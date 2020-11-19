@@ -7,7 +7,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Start plugin list
+" Plugin list
 call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'
@@ -26,9 +26,10 @@ Plug 'Shougo/neco-vim'
 Plug 'neoclide/coc-neco'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-gitgutter'
+Plug 'preservim/nerdcommenter'
 
-" End of plugin list
 call plug#end()
+" End of plugin list
 
 let mapleader = ","
 " colorscheme ron " setting colorscheme may mess up some colors set below
@@ -135,13 +136,17 @@ let g:ctrlp_custom_ignore = {
 \}
 nmap <silent> <leader>P :CtrlP<CR>
 
-" -- CursorLine: highlight current line, to not to be lost in a sea of text
+" -- CursorLine: highlighcppcurrent line, to not to be lost in a sea of text
 set cursorline
 highlight CursorLine term=bold cterm=NONE ctermbg=238 guibg=Grey
 
-" -- Text width margin. mark a column as maximum text width 
+" -- Git gutter navigation
+nnoremap <silent> <leader>dn :GitGutterNextHunk<CR>
+nnoremap <silent> <leader>dp :GitGutterPrevHunk<CR>
+
+" -- Text width margin. mark a column as maximum text width
 set textwidth=80
-set colorcolumn=+1 " mark textwidth + 1 column 
+set colorcolumn=+1 " mark textwidth + 1 column
 highlight ColorColumn ctermbg=238 guibg=Grey
 
 " -- Fugitive
@@ -172,6 +177,15 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
             \ 'Clean'     :'',
             \ 'Unknown'   :'?',}
 nmap <silent> <leader>t :NERDTreeToggle<CR>
+
+" -- NERD Commenter
+let g:NERDCreateDefaultMappings  = 0
+let g:NERDSpaceDelims            = 1
+let g:NERDCommentEmptyLines      = 1
+let g:NERDTrimTrailingWhitespace = 1
+
+nmap <silent> <leader>c/ <Plug>NERDCommenterInvert
+nmap <silent> <leader>c? <Plug>NERDCommenterAltDelims
 
 " -- Other functionalities
 nmap <leader>mr :call ToggleLineNumbers()<CR>
