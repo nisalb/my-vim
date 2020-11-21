@@ -7,6 +7,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+
 " Plugin list
 call plug#begin('~/.vim/plugged')
 
@@ -16,7 +17,6 @@ Plug 'preservim/nerdtree'
 Plug 'kien/ctrlp.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-" Plug 'ycm-core/YouCompleteMe'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
@@ -27,6 +27,7 @@ Plug 'neoclide/coc-neco'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdcommenter'
+Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 " End of plugin list
@@ -43,6 +44,7 @@ set shiftwidth=8
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
+colorscheme solarized
 
 " always on signal column, otherwise text will jump
 " everytime a diagnostic appear
@@ -63,14 +65,13 @@ endif
 autocmd FileType json,python,ruby,css,html setlocal ts=2 sw=2 et
 
 "  Fix some misunderstadings
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
-autocmd BufRead,BufNewFile *.hh,*.cc,*.cpp set filetype=cpp.doxygen
+autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+autocmd BufRead,BufNewFile *.hh,*.cc,*.cpp set filetype=cpp
 autocmd BufRead,BufNewFile */make/** set filetype=make
 
 "  fix some ugly colors
 highlight SignColumn NONE
 highlight SignColumn term=standout ctermfg=14 guifg=Cyan guibg=Grey
-highlight Pmenu ctermbg=4 guibg=DarkBlue
 " highlight YcmErrorSign ctermfg=224
 " highlight YcmWarningSign ctermfg=yellow
 
@@ -84,10 +85,15 @@ nmap <silent> <leader>wc :%s/\s\+$//e<CR>
 " autocmd BufWritePre * :%s/\s\+$//e
 
 " -- Airline
-let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'solarized'
+let g:airline_solarized_bg = 'dark'
 let g:airline#extensions#tabline#enabled  = 1    " enable the list of buffers
-" let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
 let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#whitespace#mixed_indent_algo = 1
+let g:airline#extensions#c_like_langs = [
+    \ 'arduino', 'c', 'cpp', 'cuda', 'go', 'javascript', 'ld', 'php',
+    \ 'c.doxygen', 'cpp.doxygen'
+  \ ]
 
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
@@ -138,7 +144,7 @@ nmap <silent> <leader>P :CtrlP<CR>
 
 " -- CursorLine: highlighcppcurrent line, to not to be lost in a sea of text
 set cursorline
-highlight CursorLine term=bold cterm=NONE ctermbg=238 guibg=Grey
+highlight CursorLine term=bold cterm=NONE ctermbg=0 guibg=Grey
 
 " -- Git gutter navigation
 nnoremap <silent> <leader>dn :GitGutterNextHunk<CR>
@@ -147,7 +153,7 @@ nnoremap <silent> <leader>dp :GitGutterPrevHunk<CR>
 " -- Text width margin. mark a column as maximum text width
 set textwidth=80
 set colorcolumn=+1 " mark textwidth + 1 column
-highlight ColorColumn ctermbg=238 guibg=Grey
+highlight ColorColumn ctermbg=0 guibg=Grey
 
 " -- Fugitive
 nmap <silent> <leader>g :Git<CR>
